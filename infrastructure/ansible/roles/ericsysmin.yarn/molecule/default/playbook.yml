@@ -1,0 +1,7 @@
+---
+- name: Converge
+  hosts: all
+  roles:
+    - role: geerlingguy.nodejs
+      nodejs_install_npm_user: root
+    - role: ericsysmin.yarn

@@ -1,0 +1,11 @@
+---
+
+# Username local
+OWNER: "wilykv"
+
+# Git informations
+GIT_NAME: "Kevin"
+GIT_EMAIL: "kevin.nicol@acensi.fr"
+
+# Personal Access Token
+TOKEN_GIT_CLONE: 'iWx8VjhJBwkyxaZnNq5B'

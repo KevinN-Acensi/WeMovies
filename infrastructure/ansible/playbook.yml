@@ -1,0 +1,35 @@
+---
+
+- hosts: local
+
+  become: yes
+  become_user: root
+  tasks:
+    - name: Make installation
+      import_role:
+        name: manala.make
+
+    - name: Docker installation
+      import_role:
+        name: geerlingguy.docker
+
+    - name: Yarn installation
+      import_role:
+        name: ericsysmin.yarn
+
+    - name: Add host locally
+      lineinfile:
+        path: "/etc/hosts"
+        state: present
+        line: "127.0.0.1 wemovies.local"
+        insertafter: EOF
+
+    - name: Add docker group to own user
+      make:
+        chdir: "../"
+        target: debug
+
+    - name: Add docker group to own user and create and execute docker containers
+      make:
+        chdir: "../"
+        target: init
