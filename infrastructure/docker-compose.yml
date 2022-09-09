@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  php-fpm:
+    build: docker/php-fpm
+    container_name: wemovies_php
+    volumes:
+      - ./../web:/var/www
+  nginx:
+    build: docker/nginx
+    container_name: wemovies_nginx
+    links:
+      - php-fpm:fpm
+    ports:
+      - "8081:80"
+    volumes:
+      - ./../web:/var/www/
+      - ./../web/logs/nginx/:/var/log/nginx
