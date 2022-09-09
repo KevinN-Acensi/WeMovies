@@ -10,12 +10,16 @@ const $ = require('jquery');
 bsCustomFileInput.init();
 
 $(document).ready(function() {
+    // When you click on genre checkbox
     $('.checkbox-genre').click(function() {
+        // Stock all genre selected in var string
         var values = $('.checkbox-genre:checkbox:checked').map(function() {
             return this.value;
         }).get();
 
+        // Put it in hidden input value
         $("#form_listGenre").val(values);
+        // Submit the form
         $("#genre_form").submit();
     });
 });

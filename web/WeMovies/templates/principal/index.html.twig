@@ -7,7 +7,7 @@
         <div class="container">
             <a class="navbar-brand">A propos de We Movies</a>
             <form class="d-flex" role="search">
-                <input id="search-bar" class="form-control me-2" type="search" placeholder="Recherche" aria-label="Search">
+                <input id="search-bar" class="form-control me-2" type="search" placeholder="Recherche (non fonctionnel)" aria-label="Search">
                 <span id="search-bar-icon" class="input-group-text">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
   <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
@@ -17,11 +17,18 @@
         </div>
     </nav>
     <div class="container">
+        {# Trailer about the best movie if it has #}
         <div class="row">
+            {% if bestMovie is defined and bestMovie.trailer is not empty %}
+                <div class="row g-0 mt-4 p-3">
+                    <div class="ratio ratio-16x9">
+                        <iframe src="https://www.youtube.com/embed/{{ bestMovie.trailer|first.key }}?rel=0" title="YouTube video" allowfullscreen></iframe>
+                    </div>
+                </div>
+            {% endif %}
         </div>
-        <div class="row">
-        </div>
-        <div class="row">
+        <div class="row mt-4">
+            {# Checkbox form genre #}
             <div class="col">
                 <div class="card">
                     <div class="card-body">
@@ -31,11 +38,13 @@
                     </div>
                 </div>
             </div>
+            {# Movies list #}
             <div class="col-8">
                 {% if movies is defined %}
                     {% for movie in movies %}
                         <div class="card mb-3 bg-light">
                             <div class="row g-0">
+                                {# Card with movie details #}
                                 <div id="poster-movie" class="col-2">
                                     <img src="https://image.tmdb.org/t/p/w500{{ movie.posterPath }}" class="img-fluid rounded-start" alt="poster">
                                 </div>
@@ -43,13 +52,7 @@
                                     <div class="card-body">
                                         <div class="row d-inline">
                                             <h5 class="card-title d-inline">{{ movie.title }}</h5>
-                                            <div class="rating d-inline">
-                                                <i class="bi bi-star{% if movie.voteAverage > 2 %}-fill{% elseif movie.voteAverage > 0 %}-half{% endif %}"></i>
-                                                <i class="bi bi-star{% if movie.voteAverage > 4 %}-fill{% elseif movie.voteAverage > 2 %}-half{% endif %}"></i>
-                                                <i class="bi bi-star{% if movie.voteAverage > 6 %}-fill{% elseif movie.voteAverage > 4 %}-half{% endif %}"></i>
-                                                <i class="bi bi-star{% if movie.voteAverage > 8 %}-fill{% elseif movie.voteAverage > 6 %}-half{% endif %}"></i>
-                                                <i class="bi bi-star{% if movie.voteAverage == 10 %}-fill{% elseif movie.voteAverage > 8 %}-half{% endif %}"></i>
-                                            </div>
+                                            {% include 'inc/stars-notation.html.twig' with {'movie': movie} %}
                                             <h6 class="d-inline text-secondary fs-6">({{ movie.voteCount }} votes)</h6>
                                         </div>
                                         <p class="card-text">
@@ -60,6 +63,42 @@
                                             </small>
                                         </p>
                                         <p class="card-text mt-2">{{ movie.overview|raw|length > 200 ? movie.overview|striptags|slice(0, 200) ~ '...' : movie.overview|raw }}</p>
+                                        {% if movie.trailer is not empty %}
+                                        <button type="button" class="btn btn-primary btn-more-details float-end mb-3" data-bs-toggle="modal" data-bs-target="#modal-movie-{{ movie.id }}">
+                                            Lire les détails
+                                        </button>
+                                    </div>
+                                </div>
+                                {# Modal for this movie shown when you click on the button #}
+                                <div class="modal fade" id="modal-movie-{{ movie.id }}" tabindex="-1" aria-labelledby="informationTitle" aria-hidden="true">
+                                    <div class="modal-dialog modal-xl">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="informationTitle">{{ movie.trailer|first.name }}</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body p-4">
+                                                <div class="row g-0 mb-4">
+                                                    <div class="ratio ratio-16x9">
+                                                        <iframe src="https://www.youtube.com/embed/{{ movie.trailer|first.key }}?rel=0" title="YouTube video" allowfullscreen></iframe>
+                                                    </div>
+                                                </div>
+                                                <div class="row d-inline">
+                                                    <span class="text-secondary">Film : </span><h5 class="card-title d-inline">{{ movie.title }}</h5>
+                                                    {% include 'inc/stars-notation.html.twig' with {'movie': movie} %}
+                                                    <span class="text-light bg-dark">{{ (movie.voteAverage / 2)|number_format(2) }}</span><span class="d-inline fs-6"> pour {{ movie.voteCount }} utilisateurs</span>
+                                                </div>
+                                                <p class="card-text">
+                                                    <small class="text-muted">{{ movie.releaseDate|date("Y") }} -
+                                                        {% for compagnie in movie.productionCompanies %}
+                                                            <span class="text-primary">{{ compagnie.name }}{% if loop.last != true %},{% endif %}</span>
+                                                        {% endfor %}
+                                                    </small>
+                                                </p>
+                                                <p class="card-text mt-2">{{ movie.overview }}</p>
+                                            </div>
+                                        </div>
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>

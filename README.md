@@ -18,4 +18,31 @@ Now you will run the ansible playbook in ansible folder
 IMPORTANT: If you encounter a problem with a docker connection, you must reconnect to your session to update your user groups and start over
 
 ---
-##Adding the host locally
+##Configure and start project
+
+Start by running the following command:
+
+    cd infrastructure && make create_start && make permissions && make wemovies-init && cd ..
+
+You will then have to go to the web project and launch yarn again to have the compiled stylesheets :
+    
+    cd web/WeMovies && yarn install && yarn encore dev
+
+You can now access the following url http://wemovies.local:8081
+
+---
+##Area for improvement
+
+Unfortunately, I didn't have time to:
+- Add redis to cache API returns and avoid too many calls
+- Add pagination because the list does not display entirely due to an overload
+- Add symfony UX systems to improve perfs, such as reloading part of the pages only
+- Create and manage exceptions / error cases
+- Improve the unit tests
+- Create search bar system
+
+
+Possible improvements that could be considered for a real project of this kind:
+- Optimize film sorting
+- Add functional tests and integration tests (with behat and cypress for example)
+- Implementation of a CI/CD
