@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+
 /**
  * Class Movie
  */
@@ -18,9 +20,9 @@ class Movie
     private string $title;
 
     /**
-     * @var int
+     * @var float
      */
-    private int $voteAverage;
+    private float $voteAverage;
 
     /**
      * @var int
@@ -28,9 +30,9 @@ class Movie
     private int $voteCount;
 
     /**
-     * @var \DateTime
+     * @var \DateTime|null
      */
-    private \DateTime $releaseDate;
+    private \DateTime|null $releaseDate;
 
     /**
      * @var string
@@ -48,9 +50,17 @@ class Movie
     private array $productionCompanies;
 
     /**
-     * @var array
+     * @var ArrayCollection|null
      */
-    private array $trailer;
+    private ArrayCollection|null $trailer;
+
+    /**
+     * Movie constructor.
+     */
+    public function __construct()
+    {
+        $this->trailer = new ArrayCollection();
+    }
 
     /**
      * @return int
@@ -91,18 +101,18 @@ class Movie
     }
 
     /**
-     * @return int
+     * @return float
      */
-    public function getVoteAverage(): int
+    public function getVoteAverage(): float
     {
         return $this->voteAverage;
     }
 
     /**
-     * @param int $voteAverage
+     * @param float $voteAverage
      * @return Movie
      */
-    public function setVoteAverage(int $voteAverage): Movie
+    public function setVoteAverage(float $voteAverage): Movie
     {
         $this->voteAverage = $voteAverage;
 
@@ -129,18 +139,18 @@ class Movie
     }
 
     /**
-     * @return \DateTime
+     * @return \DateTime|null
      */
-    public function getReleaseDate(): \DateTime
+    public function getReleaseDate(): ?\DateTime
     {
         return $this->releaseDate;
     }
 
     /**
-     * @param \DateTime $releaseDate
+     * @param \DateTime|null $releaseDate
      * @return Movie
      */
-    public function setReleaseDate(\DateTime $releaseDate): Movie
+    public function setReleaseDate(?\DateTime $releaseDate): Movie
     {
         $this->releaseDate = $releaseDate;
 
@@ -205,18 +215,18 @@ class Movie
     }
 
     /**
-     * @return array
+     * @return ArrayCollection|null
      */
-    public function getTrailer(): array
+    public function getTrailer(): ?ArrayCollection
     {
         return $this->trailer;
     }
 
     /**
-     * @param array $trailer
+     * @param ArrayCollection|null $trailer
      * @return Movie
      */
-    public function setTrailer(array $trailer): Movie
+    public function setTrailer(?ArrayCollection $trailer): Movie
     {
         $this->trailer = $trailer;
 

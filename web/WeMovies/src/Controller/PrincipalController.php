@@ -2,7 +2,8 @@
 
 namespace App\Controller;
 
-use App\Service\MovieApiService;
+use App\Service\ApiService;
+use App\Service\MovieService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -13,9 +14,9 @@ use Symfony\Component\Routing\Annotation\Route;
 class PrincipalController extends AbstractController
 {
     #[Route('/', name: 'index')]
-    public function indexAction(Request $request, MovieApiService $movieApiService): Response
+    public function indexAction(Request $request, ApiService $apiService, MovieService $movieService): Response
     {
-        $genres = $movieApiService->getAllGenreMovie();
+        $genres = $apiService->getAllGenreMovie();
         $params['genres'] = $genres;
 
         $form = $this->createFormBuilder();
@@ -38,14 +39,15 @@ class PrincipalController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
-            $params['movies'] = $movieApiService->getMoviesList($data['listGenre']);
+            $params['movies'] = $apiService->getMoviesList($data['listGenre']);
             $params['genreChecked'] = explode(',', $data['listGenre']);
         }
 
         if (!array_key_exists('movies', $params)) {
-            $params['movies'] = $movieApiService->getMoviesList();
+            $params['movies'] = $apiService->getMoviesList();
         }
 
+        $params['bestMovie'] = $movieService->getBestMovie($params['movies']);
         $params['form'] = $form->createView();
         return $this->render('principal/index.html.twig', $params);
     }
