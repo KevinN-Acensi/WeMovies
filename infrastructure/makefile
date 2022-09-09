@@ -45,3 +45,8 @@ init: debug create_start permissions ## Initialisation for docker and permission
 php_sh: ## Connection to php container
 	docker exec -it -u `id -u ${USER}` wemovies_php bash
 
+######## WEB #########
+
+wemovies-init:
+	docker exec -u `id -u ${USER}` wemovies_php bash -c "cd WeMovies && composer update && bin/console c:c && bin/phpunit"
+	cd ../web/WeMovies

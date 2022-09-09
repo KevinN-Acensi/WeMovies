@@ -20,8 +20,17 @@ IMPORTANT: If you encounter a problem with a docker connection, you must reconne
 ---
 ##Configure and start project
 
-    cd infrastructure && make create_start && make permissions && cd ..
+Start by running the following command:
 
+    cd infrastructure && make create_start && make permissions && make wemovies-init && cd ..
+
+You will then have to go to the web project and launch yarn again to have the compiled stylesheets :
+    
+    cd web/WeMovies && yarn install && yarn encore dev
+
+You can now access the following url http://wemovies.local:8081
+
+---
 ##Area for improvement
 
 Unfortunately, I didn't have time to:
