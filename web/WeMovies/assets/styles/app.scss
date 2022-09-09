@@ -1,0 +1,28 @@
+@import '~bootstrap/scss/bootstrap';
+@import '~bootstrap-icons';
+
+#search-bar {
+  margin-right: 0 !important;
+  border-radius: 0;
+  border-right: 0;
+}
+
+#search-bar-icon {
+  border-radius: 0;
+  background-color: #fff;
+  border-left: 0;
+}
+
+#poster-movie {
+  max-width: 100px;
+  margin: 16px;
+}
+
+.fa {
+  margin-right: 5px;
+}
+
+.rating .bi {
+  font-size: 15px;
+  color: #0087D7;
+}
