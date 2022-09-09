@@ -1,0 +1,8 @@
+---
+
+roles:
+  - name: manala.make
+  - name: geerlingguy.docker
+  - name: ericsysmin.epel
+  - name: geerlingguy.nodejs
+  - name: ericsysmin.yarn
